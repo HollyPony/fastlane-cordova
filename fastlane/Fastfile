@@ -1,0 +1,160 @@
+# Customise this file, documentation can be found here:
+# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# Author : arthur.agombrt@gmail.com
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+
+require 'active_support'
+require 'active_support/core_ext'
+
+fastlane_version "2.11.0"
+default_platform :ios
+
+before_all do |lane, options|
+
+  puts "-- fastlane-cordova Bafore_all Options"
+  puts options
+
+  options["node_version"] ||= 5
+  options["cordova_version"] ||= 5
+
+  puts "-- Node version"
+  puts options[:node_version]
+  # IO.popen(". $NVM_DIR/nvm.sh && nvm install ".concat(options[:node_version]))
+  # sh ". $NVM_DIR/nvm.sh && nvm install 7.2 && npm install cordova && cd .. && PATH=$PATH:node_modules/.bin && cordova build android"
+end
+
+
+platform :ios do
+  before_all do |lane, options|
+    config = Hash.from_xml(File.read("../config.xml"))
+    options["config"] = config
+    options["app_name"] = config["widget"]["name"]
+    options["app_id"] = config["widget"]["ios-CFBundleIdentifier"]
+  end
+
+  desc "Runs all the tests"
+  lane :test do |options|
+    scan(workspace: options[:xcworkspace])
+  end
+
+  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do
+    # match(type: "appstore") # more information: https://codesigning.guide
+    gym # Build your app - more options available
+    pilot
+
+    # sh "your_script.sh"
+    # You can also use other beta testing services here (run `fastlane actions`)
+  end
+
+  desc "Deploy a new version to the App Store"
+  lane :release do
+    # match(type: "appstore")
+    # snapshot
+    gym # Build your app - more options available
+    deliver(force: true)
+    # frameit
+  end
+
+  # You can define as many lanes as you want
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+
+    # slack(
+    #   message: "Successfully deployed new App Update."
+    # )
+  end
+
+  error do |lane, exception|
+    # slack(
+    #   message: exception.message,
+    #   success: false
+    # )
+  end
+end
+
+platform :android do
+  before_all do |lane, options|
+    config = Hash.from_xml(File.read("../config.xml"))
+    options["config"] = config
+    options["app_name"] = config["widget"]["name"]
+    options["app_id"] = config["widget"]["ios-CFBundleIdentifier"]
+  end
+
+  desc "Do nothing"
+  lane :dummy do |options|
+    puts "-in dummy"
+    puts options
+    puts "./platforms/ios/#{options[:app_name]}.xcworkspace"
+    # options["xcworkspace"] = "./platforms/ios/#{options[:app_name]}.xcworkspace"
+    # puts node_version
+  end
+
+  desc "Do nothing"
+  lane :install_cordova do
+    sh ". $NVM_DIR/nvm.sh && nvm install 7.2 && npm install cordova && cd .. && PATH=$PATH:node_modules/.bin && cordova build android"
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "assembleRelease")
+    crashlytics
+
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "assembleRelease")
+    supply
+  end
+
+  # You can define as many lanes as you want
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+
+    # slack(
+    #   message: "Successfully deployed new App Update."
+    # )
+  end
+
+  error do |lane, exception|
+    puts "Error android"
+    # slack(
+    #   message: exception.message,
+    #   success: false
+    # )
+  end
+end
+
+# If any error everywhere
+error do |lane, exception|
+  puts "Error genreal"
+end
+
+
+# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
+# All available actions: https://docs.fastlane.tools/actions
+
+# fastlane reports which actions are used
+# No personal data is sent or shared nor recorded. Learn more at https://github.com/fastlane/enhancer
