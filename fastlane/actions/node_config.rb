@@ -4,11 +4,11 @@ module Fastlane
       NODE_VERSION = :NODE_VERSION
     end
 
-    class NodeVersionAction < Action
+    class NodeConfigAction < Action
       def self.run(params)
-        node_version = params[:node_version]
+        node_version = params[:version]
         Actions.lane_context[SharedValues::NODE_VERSION] = node_version
-        Actions::NvmInstallAction.run
+        sh ". $NVM_DIR/nvm.sh && nvm install #{node_version}"
       end
 
       #####################################################
@@ -21,7 +21,7 @@ module Fastlane
 
       def self.available_options
         [
-            FastlaneCore::ConfigItem.new(key: :node_version,
+            FastlaneCore::ConfigItem.new(key: :version,
                                          env_name: "FL_NODE_VERSION", # The name of the environment variable
                                          description: "Define Node version for build", # a short description of this parameter)
                                          optional: false)
