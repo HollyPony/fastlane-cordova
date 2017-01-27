@@ -20,20 +20,6 @@ require 'active_support/core_ext'
 fastlane_version "2.11.0"
 default_platform :ios
 
-before_all do |lane, options|
-
-  puts "-- fastlane-cordova Bafore_all Options"
-  puts options
-
-  options["node_version"] ||= 5
-  options["cordova_version"] ||= 5
-
-  puts "-- Node version"
-  puts options[:node_version]
-  # IO.popen(". $NVM_DIR/nvm.sh && nvm install ".concat(options[:node_version]))
-  # sh ". $NVM_DIR/nvm.sh && nvm install 7.2 && npm install cordova && cd .. && PATH=$PATH:node_modules/.bin && cordova build android"
-end
-
 
 platform :ios do
   before_all do |lane, options|
@@ -88,6 +74,21 @@ end
 
 platform :android do
   before_all do |lane, options|
+
+
+    puts "-- fastlane-cordova :android:before_all"
+    puts options
+
+    options["node_version"] ||= 5
+    options["cordova_version"] ||= 5
+
+    puts "-- Node version"
+    puts options[:node_version]
+    # IO.popen(". $NVM_DIR/nvm.sh && nvm install ".concat(options[:node_version]))
+    # sh ". $NVM_DIR/nvm.sh && nvm install 7.2 && npm install cordova && cd .. && PATH=$PATH:node_modules/.bin && cordova build android"
+
+
+
     config = Hash.from_xml(File.read("../config.xml"))
     options["config"] = config
     options["app_name"] = config["widget"]["name"]
