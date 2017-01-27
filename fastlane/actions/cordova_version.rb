@@ -4,9 +4,13 @@ module Fastlane
       CORDOVA_VERSION = :CORDOVA_VERSION
     end
 
-    class SetCordovaVersionAction < Action
+    class CordovaVersionAction < Action
       def self.run(params)
-        Actions.lane_context[SharedValues::CORDOVA_VERSION] = params[:cordova_version]
+        node_version = Actions.lane_context[SharedValues::NODE_VERSION]
+        cordova_version = params[:cordova_version]
+        Actions.lane_context[SharedValues::CORDOVA_VERSION] = cordova_version
+
+        sh ". $NVM_DIR/nvm.sh && nvm use #{node_version} && cd .. && npm install cordova@#{cordova_version}"
       end
 
       #####################################################
@@ -14,7 +18,7 @@ module Fastlane
       #####################################################
 
       def self.description
-        "A short description with <= 80 characters of what this action does"
+        "Define and install cordova version"
       end
 
       def self.details
@@ -26,8 +30,9 @@ module Fastlane
       def self.available_options
         [
             FastlaneCore::ConfigItem.new(key: :cordova_version,
-                                         env_name: "FL_SET_CORDOVA_VERSION", # The name of the environment variable
-                                         description: "Define Cordova version for build") # a short description of this parameter)
+                                         env_name: "FL_CORDOVA_VERSION", # The name of the environment variable
+                                         description: "Define Cordova version for build", # a short description of this parameter)
+                                         optional: false)
         ]
       end
 

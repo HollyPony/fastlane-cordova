@@ -20,6 +20,8 @@ require 'active_support/core_ext'
 fastlane_version "2.11.0"
 default_platform :ios
 
+node_version(node_version: "6")
+
 # before_all do |lane, options|
 #   puts "-- fastlane-cordova before_all Options"
 #   puts options
