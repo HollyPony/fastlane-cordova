@@ -10,6 +10,7 @@ module Fastlane
         node_version = Actions.lane_context[SharedValues::NODE_VERSION]
         cordova_version = params[:version]
         Actions.lane_context[SharedValues::CORDOVA_VERSION] = cordova_version
+        Actions.lane_context[SharedValues::CORDOVA_PATH] = params[:path]
 
         sh ". $NVM_DIR/nvm.sh && nvm use #{node_version} && cd .. && npm install cordova@#{cordova_version}"
       end

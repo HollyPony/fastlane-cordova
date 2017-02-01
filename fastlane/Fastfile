@@ -20,20 +20,12 @@ require 'active_support/core_ext'
 fastlane_version "2.11.0"
 default_platform :ios
 
-node_config(version: "6")
-cordova_config(
-    version: "6",
-    path: "../config.xml"
-)
-
-
 platform :ios do
   desc "Build Cordova IOs config"
   lane :cordova_build do
-      config = Hash.from_xml(File.read("../config.xml"))
-      options["config"] = config
-      options["app_name"] = config["widget"]["name"]
-      options["app_id"] = config["widget"]["ios-CFBundleIdentifier"]
+    app_name = cordova_get_config_value(key: 'name')
+    app_id = cordova_get_config_value(key: 'ios-CFBundleIdentifier')
+    cordova_build 'ios'
   end
 
   desc "Runs all the tests"
