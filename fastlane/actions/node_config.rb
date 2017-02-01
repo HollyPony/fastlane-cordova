@@ -8,7 +8,7 @@ module Fastlane
       def self.run(params)
         node_version = params[:version]
         Actions.lane_context[SharedValues::NODE_VERSION] = node_version
-        sh ". $NVM_DIR/nvm.sh && nvm install #{node_version}"
+        sh ". $NVM_DIR/nvm.sh && nvm install #{node_version} && pwd"
       end
 
       #####################################################
