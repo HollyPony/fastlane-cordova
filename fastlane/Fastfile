@@ -22,7 +22,7 @@ default_platform :ios
 
 platform :ios do
   desc "Build Cordova IOs config"
-  lane :cordova_build do
+  lane :build do
     app_name = cordova_get_config_value(key: 'name')
     app_id = cordova_get_config_value(key: 'ios-CFBundleIdentifier')
     cordova_build(platform: 'ios')
@@ -73,7 +73,7 @@ end
 
 platform :android do
   desc "Build Cordova Android"
-  lane :cordova_build do
+  lane :build do
     app_name = cordova_get_config_value(key: 'name')
     app_id = cordova_get_config_value(key: 'android-packageName')
     cordova_build(platform: 'android')
