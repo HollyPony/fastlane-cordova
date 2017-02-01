@@ -22,7 +22,7 @@ module Fastlane
         ["Your GitHub/Twitter Name"]
       end
 
-      def self.is_supported
+      def self.is_supported?
         true
       end
     end
