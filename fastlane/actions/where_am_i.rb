@@ -1,7 +1,7 @@
 module Fastlane
   module Actions
     class WhereAmIAction < Action
-      def self.run()
+      def self.run(params)
         UI.message(sh "pwd")
       end
 
