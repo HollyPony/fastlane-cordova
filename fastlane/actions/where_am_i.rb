@@ -10,7 +10,7 @@ module Fastlane
       #####################################################
 
       def self.available_options
-        nil
+        []
       end
 
       def self.output
@@ -22,7 +22,7 @@ module Fastlane
         ["Your GitHub/Twitter Name"]
       end
 
-      def self.is_supported?
+      def self.is_supported?(platform)
         true
       end
     end
