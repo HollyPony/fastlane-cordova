@@ -24,7 +24,9 @@ platform :ios do
   desc "Build Cordova IOs config"
   lane :cordova_build do
     app_name = cordova_get_config_value(key: 'name')
+    puts app_name
     app_id = cordova_get_config_value(key: 'ios-CFBundleIdentifier')
+    puts app_id
     cordova(action: 'prepare', platform: 'ios')
   end
 
@@ -75,7 +77,9 @@ platform :android do
   desc "Build Cordova Android"
   lane :cordova_build do
     app_name = cordova_get_config_value(key: 'name')
-    app_id = cordova_get_config_value(key: 'android-packageName')
+    puts app_name
+    package_name = cordova_get_config_value(key: 'android-packageName')
+    puts package_name
     cordova(action: 'build', platform: 'android')
   end
 
