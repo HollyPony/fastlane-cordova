@@ -1,10 +1,10 @@
 module Fastlane
   module Actions
-    class CordovaBuildAction < Action
+    class CordovaActionAction < Action
       def self.run(params)
         node_version = Actions.lane_context[SharedValues::NODE_VERSION]
 
-        sh ". $NVM_DIR/nvm.sh && nvm use #{node_version} && cd .. && export PARTH=$PATH:node_modules/.bin && cordoa build #{params[:platform]}"
+        sh ". $NVM_DIR/nvm.sh && nvm use #{node_version} && cd .. && export PARTH=$PATH:node_modules/.bin && cordoa #{params[:action]} #{params[:platform]}"
       end
 
       #####################################################
@@ -17,6 +17,9 @@ module Fastlane
 
       def self.available_options
         [
+            FastlaneCore::ConfigItem.new(key: :action,
+                                         description: "Cordova action",
+                                         optional: false),
             FastlaneCore::ConfigItem.new(key: :platform,
                                          env_name: "FL_CORDOVA_PLATFORM", # The name of the environment variable
                                          description: "Cordova platform target for build", # a short description of this parameter)

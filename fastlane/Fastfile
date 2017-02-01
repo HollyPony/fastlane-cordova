@@ -25,7 +25,7 @@ platform :ios do
   lane :cordova_build do
     app_name = cordova_get_config_value(key: 'name')
     app_id = cordova_get_config_value(key: 'ios-CFBundleIdentifier')
-    _cordova_build(platform: 'ios')
+    cordova(action: 'prepare', platform: 'ios')
   end
 
   desc "Runs all the tests"
@@ -76,7 +76,7 @@ platform :android do
   lane :cordova_build do
     app_name = cordova_get_config_value(key: 'name')
     app_id = cordova_get_config_value(key: 'android-packageName')
-    _cordova_build(platform: 'android')
+    cordova(action: 'build', platform: 'android')
   end
 
   desc "Runs all the tests"
