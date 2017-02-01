@@ -27,13 +27,6 @@ module Fastlane
         ]
       end
 
-      def self.output
-        [
-            ['CORDOVA_VERSION', 'Cordova version'],
-            ['CORDOVA_PATH', 'config.xml path']
-        ]
-      end
-
       def self.authors
         ["https://github.com/HollyPony/"]
       end

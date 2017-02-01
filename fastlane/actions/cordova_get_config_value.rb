@@ -2,7 +2,7 @@ module Fastlane
   module Actions
     class CordovaGetConfigValueAction < Action
       def self.run(params)
-        config = Hash.from_xml(File.read(Actions.lane_context[SharedValues::CORDOVA_PATH]))
+        config = Hash.from_xml(File.read(Actions.lane_context[SharedValues::CORDOVA_PATH] + '/config.xml'))
         return config["widget"][params[:key]]
       end
 
