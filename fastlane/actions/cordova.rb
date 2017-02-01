@@ -1,6 +1,6 @@
 module Fastlane
   module Actions
-    class CordovaActionAction < Action
+    class CordovaAction < Action
       def self.run(params)
         node_version = Actions.lane_context[SharedValues::NODE_VERSION]
 
