@@ -76,7 +76,7 @@ platform :android do
   lane :cordova_build do
     app_name = cordova_get_config_value(key: 'name')
     app_id = cordova_get_config_value(key: 'android-packageName')
-    cordova_build 'android'
+    cordova_build platform: 'android'
   end
 
   desc "Runs all the tests"
