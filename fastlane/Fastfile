@@ -72,9 +72,11 @@ platform :ios do
 end
 
 platform :android do
-  desc "Do nothing"
-  lane :dummy do
-    sh ". $NVM_DIR/nvm.sh && nvm install 7.2 && npm install cordova && cd .. && PATH=$PATH:node_modules/.bin && cordova build android"
+  desc "Build Cordova Android"
+  lane :cordova_build do
+    app_name = cordova_get_config_value(key: 'name')
+    app_id = cordova_get_config_value(key: 'android-packageName')
+    cordova_build 'android'
   end
 
   desc "Runs all the tests"
