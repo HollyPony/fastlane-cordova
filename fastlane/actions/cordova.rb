@@ -4,7 +4,7 @@ module Fastlane
       def self.run(params)
         node_version = Actions.lane_context[SharedValues::NODE_VERSION]
 
-        sh ". $NVM_DIR/nvm.sh && nvm use #{node_version} && cd #{Actions.lane_context[SharedValues::CORDOVA_PATH]} && export PARTH=$PATH:node_modules/.bin && cordova #{params[:action]} #{params[:platform]}"
+        sh ". $NVM_DIR/nvm.sh && nvm use #{node_version} && cd #{Actions.lane_context[SharedValues::CORDOVA_PATH]} && export PATH=$PATH:node_modules/.bin && cordova #{params[:action]} #{params[:platform]}"
       end
 
       #####################################################
